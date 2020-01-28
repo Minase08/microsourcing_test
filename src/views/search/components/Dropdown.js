@@ -8,18 +8,9 @@ export default class SearchDropdown extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            options = this.props.list,
-            onSelectEvent = null,           
-            selectedValue = null,
-            dropdown_props : {
-                list: this.props.list,
-                onSelectionApplied: selection => {
-                console.log('Selected : ', selection);
-                },
-                dropdownButtonText: 'Selected',
-                resetButtonText: 'Reset',
-                applyButtonText: 'Apply'
-            }
+            options : this.props.list,
+            onSelectEvent : null,           
+            selectedValue : null
         };
     }
 

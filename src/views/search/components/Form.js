@@ -36,6 +36,33 @@ export default class SearchForm extends React.Component {
     console.log("checkout submit stuff");
   }
 
+  handleCitySelectChange(selectedItems) {
+    console.log("City Selected")
+    console.log(selectedItems)
+    
+    axios.get('https://api.openaq.org/v1/locations', { 
+      params : {
+        country: selectedItems.country,
+        limit : 10000
+      }
+    })
+    .then((response) => {
+
+      console.log("City API Request!!!");
+      console.log(response);
+    })
+    .catch((error) => {
+      this.setState({
+          isLoaded: true,
+          error
+        });
+    })
+    .then(() => {
+      // always executed
+    });
+
+  }
+
   handleCountrySelectChange(selectedItems) {
     console.log("Form Event")
     console.log(selectedItems)
@@ -44,6 +71,10 @@ export default class SearchForm extends React.Component {
     let temp_list = [];
 
     axios.get('https://api.openaq.org/v1/cities', {
+      params : {
+        limit : 10000
+      }
+    }, {
     })
     .then(function (response) {
       
@@ -147,7 +178,6 @@ export default class SearchForm extends React.Component {
                 <div className="widget-body">
                   <form className="form-horizontal">
                     <fieldset>
-                      <legend>Default Form Elements</legend>
                       <div className="form-group">
                         <label className="col-md-2 control-label">
                           Country
@@ -161,7 +191,7 @@ export default class SearchForm extends React.Component {
                           City
                         </label>
                         <div className="col-md-10">
-                         <SearchDropdown sType={"City"} list={this.state.cityList} ></SearchDropdown>
+                         <SearchDropdown sType={"City"} onChange={this.handleCitySelectChange.bind(this)} list={this.state.cityList} ></SearchDropdown>
                         </div>
                       </div>
                       <div className="form-group">

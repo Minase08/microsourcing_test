@@ -11,7 +11,7 @@ export default class SearchDropdown extends React.Component {
         super(props);
     
         this.state = {
-            selectedCountries : [],
+            selectedItems : [],
             dropdownEvent : this.props.handleSelectChange
         };
     
@@ -23,40 +23,43 @@ export default class SearchDropdown extends React.Component {
 
     onSelect(optionsList, selectedItem) {
 
-        if (this.props.sType === "Country") {
-            if (this.temp_selected.indexOf(selectedItem) <= -1) {
-            
-                this.temp_selected.push(selectedItem)
-    
-                this.setState({
+        if (this.temp_selected.indexOf(selectedItem) <= -1) {
         
-                    selectedCountries : this.temp_selected
-                })
-            }
-           
-            this.props.onChange(this.temp_selected);
+            this.temp_selected.push(selectedItem)
+
+            this.setState({
+    
+                selectedItems : this.temp_selected
+
+            }, () => {
+
+                this.props.onChange(this.state.selectedItems);
+
+            })
         }
+           
+        
     }
     
     onRemove(optionList, removedItem) {
         
-        if (this.props.sType === "Country") {
             this.temp_selected = [];
 
-            this.state.selectedCountries.forEach(item => {
+            this.state.selectedItems.forEach(item => {
                 if (item !== removedItem) {
                     this.temp_selected.push(item)
                 }
             });
     
             this.setState({
-        
-                selectedCountries : this.temp_selected
-            })
     
-            this.props.onChange(this.temp_selected);
+                selectedItems : this.temp_selected
 
-        }
+            }, () => {
+
+                this.props.onChange(this.state.selectedItems);
+
+            })
     }
  
     render() {   
@@ -64,7 +67,6 @@ export default class SearchDropdown extends React.Component {
             <Multiselect
                 options={this.props.list} // Options to display in the dropdown
                 // selectedvalues={this.state.selectedValue} // Preselected value to persist in dropdown
-                // onSelect={this.onSelect} // Function will trigger on select event
                 onRemove={this.onRemove} // Function will trigger on remove event
                 displayValue="name" // Property name to display in the dropdown options
                 onSelect={this.onSelect} // Function will trigger on select event

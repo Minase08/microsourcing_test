@@ -3,8 +3,6 @@ import React from "react";
 import $ from "jquery";
 import axios from "axios";
 
-import countries from "../../../common/forms/commons/countries";
-
 import SearchDropdown from "./Dropdown";
 
 import {
@@ -21,54 +19,101 @@ export default class SearchForm extends React.Component {
       error: null,
       isLoaded: false,
       all_cities: [],
+      all_locations: [],
       countryList: [],
-      cityList: []
+      cityList: [],
+      locationList : [],
+      selectedCountries: [],
+      selectedCities: [],
+      selectedLocations: []
     }
+
+    this.onSubmit = this.onSubmit.bind(this);
   }
-
-
-  static defaultProps = {
-    countries
-  };
 
   onSubmit(e) {
     e.preventDefault();
     console.log("checkout submit stuff");
+
+    console.log(this.state.selectedCountries)
+    console.log(this.state.selectedCities)
+  }
+
+  handleLocationSelectChange(selectedItems) {
+
+    this.setState({
+      selectedLocations: selectedItems
+    })
+
   }
 
   handleCitySelectChange(selectedItems) {
-    console.log("City Selected")
-    console.log(selectedItems)
-    
-    axios.get('https://api.openaq.org/v1/locations', { 
+
+    console.log("City Selected!")
+
+    this.setState({
+      selectedCities: selectedItems
+    })
+
+    let currentDocument = this;
+    let temp_list = [];
+
+    axios.get('https://api.openaq.org/v1/locations', {
       params : {
-        country: selectedItems.country,
         limit : 10000
       }
+    }, {
     })
-    .then((response) => {
+    .then(function (response) {
+      
+      console.log(response.data.results)
+      console.log(selectedItems)
 
-      console.log("City API Request!!!");
-      console.log(response);
-    })
-    .catch((error) => {
-      this.setState({
-          isLoaded: true,
-          error
+      currentDocument.setState({
+        all_locations: response.data.results
+      }, () => {
+
+        selectedItems.forEach(city => {
+
+          currentDocument.state.all_locations.forEach(location => {
+            if (location.country === city.country && location.city === city.name) {
+              temp_list.push({  
+                id: location.id,
+                name: location.location
+              });
+            }
+          });
         });
+
+        currentDocument.setState({
+          locationList : temp_list
+
+        }, () => {
+          console.log(temp_list);
+
+        })
+
+      })
     })
-    .then(() => {
+    .catch(function (error) {
+      console.log(error);
+    })
+    .finally(function () {
       // always executed
-    });
+    });  
+      
+ 
 
   }
 
   handleCountrySelectChange(selectedItems) {
-    console.log("Form Event")
-    console.log(selectedItems)
 
     let currentDocument = this;
     let temp_list = [];
+
+    this.setState({
+      selectedCountries: selectedItems
+    })
 
     axios.get('https://api.openaq.org/v1/cities', {
       params : {
@@ -81,8 +126,6 @@ export default class SearchForm extends React.Component {
       currentDocument.setState({
         all_cities: response.data.results
       }, () => {
-
-        console.log(currentDocument.state.all_cities);
 
         selectedItems.forEach(country => {
           currentDocument.state.all_cities.forEach(city => {
@@ -199,7 +242,7 @@ export default class SearchForm extends React.Component {
                           Location
                         </label>
                         <div className="col-md-10">
-                        
+                        <SearchDropdown sType={"location"} onChange={this.handleLocationSelectChange.bind(this)} list={this.state.locationList} ></SearchDropdown>
                         </div>
                       </div>
 

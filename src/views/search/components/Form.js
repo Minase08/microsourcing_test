@@ -33,10 +33,17 @@ export default class SearchForm extends React.Component {
 
   onSubmit(e) {
     e.preventDefault();
+
     console.log("checkout submit stuff");
 
-    console.log(this.state.selectedCountries)
-    console.log(this.state.selectedCities)
+    this.props.onSubmit({
+
+      Country : this.state.selectedCountries,
+      City: this.state.selectedCities,
+      Location: this.state.selectedLocations
+
+    });
+
   }
 
   handleLocationSelectChange(selectedItems) {
@@ -226,7 +233,7 @@ export default class SearchForm extends React.Component {
                           Country
                         </label>
                         <div className="col-md-10">
-                        <SearchDropdown sType={"Country"} onChange={this.handleCountrySelectChange.bind(this)} list={this.state.countryList} ></SearchDropdown>
+                        <SearchDropdown className="form-control" name="Country" onChange={this.handleCountrySelectChange.bind(this)} list={this.state.countryList} ></SearchDropdown>
                         </div>
                       </div>
                       <div className="form-group">
@@ -234,7 +241,7 @@ export default class SearchForm extends React.Component {
                           City
                         </label>
                         <div className="col-md-10">
-                         <SearchDropdown sType={"City"} onChange={this.handleCitySelectChange.bind(this)} list={this.state.cityList} ></SearchDropdown>
+                         <SearchDropdown className="form-control" name="City" onChange={this.handleCitySelectChange.bind(this)} list={this.state.cityList} ></SearchDropdown>
                         </div>
                       </div>
                       <div className="form-group">
@@ -242,10 +249,19 @@ export default class SearchForm extends React.Component {
                           Location
                         </label>
                         <div className="col-md-10">
-                        <SearchDropdown sType={"location"} onChange={this.handleLocationSelectChange.bind(this)} list={this.state.locationList} ></SearchDropdown>
+                        <SearchDropdown className="form-control" name="Location" onChange={this.handleLocationSelectChange.bind(this)} list={this.state.locationList} ></SearchDropdown>
                         </div>
                       </div>
 
+                    </fieldset>
+
+                    <fieldset>
+                      {/* #messages is where the messages are placed inside */}
+                      <div className="form-group">
+                        <div className="col-md-9 col-md-offset-3">
+                          <div id="messages" />
+                        </div>
+                      </div>
                     </fieldset>
               
                       <div className="row">
@@ -266,7 +282,7 @@ export default class SearchForm extends React.Component {
         </div>
       </WidgetGrid>
     </div>
-   
+
     );
   }
 }

@@ -12,6 +12,28 @@
       ]
     },
     {
+      "title": "About Us",
+
+      "icon": "fa fa-lg fa-fw fa-group",
+      "items": [
+      ]
+    },
+    {
+      "title": "Contact Us",
+
+      "icon": "fa fa-lg fa-fw fa-inbox",
+      "items": [
+      ]
+    },
+    {
+      "title": "FAQ",
+
+      "icon": "fa fa-lg fa-fw fa-comment-o",
+      "items": [
+
+      ]
+    },
+    {
       "title": "Dashboard",
 
       "icon": "fa fa-lg fa-fw fa-home",

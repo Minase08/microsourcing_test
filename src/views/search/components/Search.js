@@ -12,6 +12,15 @@ import Datatable from "../../../common/tables/components/Datatable";
 import SearchForm from "./Form";
 
 export default class Search extends React.Component {
+
+    formSubmit(item) {
+
+      console.log("Main  Form Event")
+      console.log(item);
+
+    }
+
+
     render() {
       return ( 
       <div id="content" className="animated fadeInUp">
@@ -23,7 +32,7 @@ export default class Search extends React.Component {
           <Stats />
         </div>
 
-        <SearchForm>
+        <SearchForm onSubmit={this.formSubmit.bind(this)}>
         </SearchForm>
 
         <WidgetGrid>
